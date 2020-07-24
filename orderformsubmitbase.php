@@ -47,7 +47,7 @@ if(isset($_POST['submit']))
 
 <?php //market bal
  $chbal = curl_init($balurl); 
- curl_setopt($chbal, CURLOPT_USERPWD, $apikey); // API AND KEY
+ curl_setopt($chbal, CURLOPT_USERPWD, $keyapi); // API AND KEY
  curl_setopt($chbal, CURLOPT_RETURNTRANSFER,1);
  curl_setopt($chbal, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
 curl_setopt($chbal, CURLOPT_HTTPHEADER, array('accept: application/json'));
@@ -67,7 +67,7 @@ foreach ($data as $key => $value) {//Extract the Array Values by using Foreach L
 ?>
 <?php //coin bal 
  $chbal0 = curl_init($balurl); 
- curl_setopt($chbal0, CURLOPT_USERPWD, $apikey); // API AND KEY
+ curl_setopt($chbal0, CURLOPT_USERPWD, $keyapi); // API AND KEY
  curl_setopt($chbal0, CURLOPT_RETURNTRANSFER,1);
  curl_setopt($chbal0, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
 curl_setopt($chbal0, CURLOPT_HTTPHEADER, array('accept: application/json'));
