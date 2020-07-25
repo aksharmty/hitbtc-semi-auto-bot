@@ -92,7 +92,7 @@ $price= "$buy";
 $quantityb="$quantity";
     echo "Coin balance ",$balance0; echo "<br>";
     echo "Market balance ",$balance; echo "<br>";
-if($balance > $buyamount){ echo "buy"; 
+if($balance > $btclow){ echo "buy"; 
      $ch = curl_init();
 //do a post
 curl_setopt($ch,CURLOPT_URL,$orderurl);
