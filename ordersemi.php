@@ -30,7 +30,7 @@ $orderurl = 'https://api.hitbtc.com/api/2/order';
 $coinname = mysqli_fetch_array(mysqli_query($connection,"select * from trade2 where type ='0' order by RAND() limit 1"));
 $coin = $coinname['currency'];
 echo " currency name : ",$coin;
- $chbal = curl_init($balurl'); 
+ $chbal = curl_init($balurl); 
  curl_setopt($chbal, CURLOPT_USERPWD, $keyapi); // API AND KEY
  curl_setopt($chbal, CURLOPT_RETURNTRANSFER,1);
  curl_setopt($chbal, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
@@ -63,12 +63,18 @@ if ($result->num_rows > 0) {
       $id = $row["id"];
       $symbol = $row["pair"];
       $currency = $row["currency"];
-      $available =$row["available"];
-      $sellprice = $row["sellprice"];
+    //  $available =$row["available"];
+      $sellprice1 = $row["sellprice"];
       $quantity =$row["quantity"];
       $lastbal =$row["lastbal"];
     echo "id: " . $row["id"]. "pair: " . $row["pair"]. " - Currency: " . $row["currency"]." - available: " . $row["available"]." - lastbal: " . $row["lastbal"]." - price: " . $row["price"]." - sellprice: " . $row["sellprice"]." - type: " . $row["type"]." - quantity: " . $row["quantity"]. "<br>";
  
+ //ask - bid check
+$url = "https://api.hitbtc.com/api/2/public/ticker/$symbol";
+$dataDOGEBTC = json_decode(file_get_contents($url), true);
+$bid=$dataDOGEBTC['bid']; echo "bid price :",$bid;
+
+ if($sellprice1 > $bid){$sellprice = $sellprice1; } else { $sellprice = $bid;}
  echo "symbol :",$symbol; echo "<br>";
  echo "Coin :",$currency; echo "<br>";
  echo "balance :",$available; echo "<br>";
@@ -79,10 +85,8 @@ $symbol = "$symbol";
 $type = "limit";
 $price= "$sellprice";
 $quantityb="$quantity";
- $sql = mysqli_fetch_array(mysqli_query($connection,"SELECT * FROM `balance` WHERE currency='$currency'"));
-    $balance = $sql['available'];
-    //echo "balance ",$balance; echo "<br>";
-if($balance > $lastbal){ echo "sell";
+ 
+if($available > $lastbal){ echo "sell";
 if($price > 0.00000001){ echo "sell price ok";
      $ch = curl_init();
 //do a post
@@ -112,7 +116,7 @@ $bid123=$sita['clientOrderId'];
 echo "sita"; echo "$ids"; 
 //insert order details
 if($quantity123 == $quantity) { 
-$query = mysqli_query($connection,"INSERT INTO trade(price,sellprice,quantity,date,clientOrderId,type,lastbal,symbol) VALUES ('$priceask','$sell','$quantity123','$date','$bid123','0','$balance','$symbol')");
+$query = mysqli_query($connection,"INSERT INTO trade(sellprice,quantity,date,clientOrderId,type,lastbal,symbol) VALUES ('$priceask','$quantity123','$date','$bid123','0','$balance','$symbol')");
 
 $trade0u = mysqli_query($connection,"UPDATE trade2 SET sell='$priceask',selldate='$date', type ='1' WHERE pair = '$symbol' AND type='0'");
 
